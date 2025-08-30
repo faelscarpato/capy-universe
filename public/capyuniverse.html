@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CapyUniverse - Ecossistema de Ferramentas de IA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #8B5CF6;
+            --secondary: #EC4899;
+            --accent: #10B981;
+            --dark: #1F2937;
+            --darker: #111827;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #1e3a8a 100%);
+            font-family: 'Inter', sans-serif;
+            color: #E5E7EB;
+            min-height: 100vh;
+        }
+        
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+        
+        .tool-card {
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+            cursor: pointer;
+        }
+        
+        .tool-card:hover {
+            transform: translateY(-5px);
+            border-left-color: var(--primary);
+        }
+        
+        .neon-glow {
+            text-shadow: 0 0 10px rgba(139, 92, 246, 0.8),
+                         0 0 20px rgba(139, 92, 246, 0.6),
+                         0 0 30px rgba(139, 92, 246, 0.4);
+        }
+        
+        .integration-line {
+            stroke: #8B5CF6;
+            stroke-width: 2;
+            stroke-dasharray: 5,5;
+            animation: dash 20s linear infinite;
+        }
+        
+        @keyframes dash {
+            to { stroke-dashoffset: -100; }
+        }
+        
+        .data-flow {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #8B5CF6;
+            border-radius: 50%;
+            animation: flow 3s ease-in-out infinite;
+        }
+        
+        @keyframes flow {
+            0%, 100% { transform: scale(1); opacity: 0.7; }
+            50% { transform: scale(1.5); opacity: 1; }
+        }
+        
+        .chat-container {
+            height: 400px;
+            overflow-y: auto;
+        }
+        
+        .chat-message {
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .loader {
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .category-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .tool-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+     Header 
+    <header class="glass p-4 sticky top-0 z-50 border-b border-white/10">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center">
+                    <i class="fas fa-robot text-white"></i>
+                </div>
+                <h1 class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500 neon-glow">
+                    CapyUniverse IA
+                </h1>
+            </div>
+            <div class="flex space-x-4">
+                <button onclick="openApiKeyModal()" class="px-4 py-2 rounded-lg glass hover:bg-white/10 transition">
+                    <i class="fas fa-key mr-2"></i> Chave API
+                </button>
+                <button onclick="toggleIntegrationPanel()" class="px-4 py-2 rounded-lg glass hover:bg-white/10 transition">
+                    <i class="fas fa-project-diagram mr-2"></i> Integrações
+                </button>
+            </div>
+        </div>
+    </header>
+
+     Integration Panel 
+    <div id="integrationPanel" class="fixed right-0 top-16 h-full w-80 glass transform translate-x-full transition-transform duration-300 z-40 p-4 overflow-y-auto">
+        <h3 class="text-xl font-bold mb-4">Painel de Integrações</h3>
+        <div id="integrationList" class="space-y-2">
+             Integration items will be dynamically added here 
+        </div>
+    </div>
+
+     Main Content 
+    <main class="container mx-auto py-8 px-4">
+         Dashboard Overview 
+        <section class="mb-12">
+            <div class="glass rounded-2xl p-6 mb-8">
+                <h2 class="text-3xl font-bold mb-2 neon-glow">Ecossistema Integrado de Ferramentas de IA</h2>
+                <p class="text-gray-300 mb-6">Transforme ideias em resultados com ferramentas colaborativas que se complementam</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div class="glass p-4 rounded-xl text-center">
+                        <div class="text-3xl font-bold text-purple-400">29</div>
+                        <div class="text-sm">Ferramentas Especializadas</div>
+                    </div>
+                    <div class="glass p-4 rounded-xl text-center">
+                        <div class="text-3xl font-bold text-pink-400">15+</div>
+                        <div class="text-sm">Categorias Integradas</div>
+                    </div>
+                    <div class="glass p-4 rounded-xl text-center">
+                        <div class="text-3xl font-bold text-green-400">100+</div>
+                        <div class="text-sm">Fluxos de Trabalho</div>
+                    </div>
+                    <div class="glass p-4 rounded-xl text-center">
+                        <div class="text-3xl font-bold text-blue-400">∞</div>
+                        <div class="text-sm">Possibilidades de Integração</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+         Tools Grid 
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold mb-6 flex items-center">
+                <i class="fas fa-layer-group mr-3 text-purple-400"></i>
+                Ferramentas Disponíveis
+            </h2>
+            
+            <div id="toolsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                 Tools will be dynamically loaded here 
+            </div>
+        </section>
+
+         Integration Flows 
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold mb-6 flex items-center">
+                <i class="fas fa-project-diagram mr-3 text-purple-400"></i>
+                Fluxos de Integração Ideais
+            </h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                 Flow cards will be dynamically loaded here 
+            </div>
+        </section>
+    </main>
+
+     Tool Detail Modal 
+    <div id="toolModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 hidden p-4">
+        <div class="glass rounded-2xl w-full max-w-6xl max-h-[90vh] overflow-y-auto">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 id="modalTitle" class="text-2xl font-bold"></h2>
+                    <button onclick="closeToolModal()" class="text-gray-400 hover:text-white text-2xl">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div>
+                        <div id="toolInfo" class="glass rounded-xl p-6 mb-6">
+                             Tool info will be loaded here 
+                        </div>
+                        
+                        <div class="glass rounded-xl p-6">
+                            <h3 class="text-xl font-bold mb-4 text-purple-400">Integrações Disponíveis</h3>
+                            <div id="integrationOptions" class="space-y-2">
+                                 Integration options will be loaded here 
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="glass rounded-xl p-6">
+                            <h3 class="text-xl font-bold mb-4 text-green-400">Interface da Ferramenta</h3>
+                            <div id="toolInterface" class="space-y-4">
+                                 Tool interface will be loaded here 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     API Key Modal 
+    <div id="apiKeyModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 hidden p-4">
+        <div class="glass rounded-2xl w-full max-w-md p-6">
+            <h2 class="text-2xl font-bold mb-4">Configurar Chave API</h2>
+            <p class="text-gray-300 mb-4">Insira sua chave da API Gemini 2.0 Flash para habilitar as funcionalidades de IA</p>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium mb-2">Chave API</label>
+                    <input type="password" id="apiKeyInput" class="w-full px-4 py-2 rounded-lg bg-gray-800 border border-gray-700 focus:border-purple-500 focus:outline-none" placeholder="Cole sua chave API aqui">
+                </div>
+                
+                <div class="flex space-x-4">
+                    <button onclick="saveApiKey()" class="flex-1 px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg transition">
+                        Salvar
+                    </button>
+                    <button onclick="closeApiKeyModal()" class="flex-1 px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition">
+                        Cancelar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tools data extracted from the file
+        const toolsData = [
+            {
+                id: "capyaudiencias",
+                name: "CapyAudiencias",
+                function: "Você é a IA Analisador de Atas de Audiência do CapyUniverse. Objetivo: Analise e resuma atas de audiência com precisão jurídica de IA.",
+                category: "Jurídico",
+                icon: "fas fa-balance-scale",
+                color: "bg-red-500/20 text-red-400",
+                integrations: ["capycronos", "capydoc", "capyfiscal"]
+            },
+            {
+                id: "capydados",
+                name: "CapyDados",
+                function: "Você é a IA Analisador de Dados do CapyUniverse. Objetivo: Obtenha insights e análises a partir dos seus conjuntos de dados.",
+                category: "Análise de Dados",
+                icon: "fas fa-chart-bar",
+                color: "bg-purple-500/20 text-purple-400",
+                integrations: ["capyexplorer", "capyboard"]
+            },
+            {
+                id: "capydoc",
+                name: "CapyDoc",
+                function: "Você é a IA Analisar Documentos do CapyUniverse. Objetivo: Extraia informações e interaja com o conteúdo de documentos.",
+                category: "Documentos",
+                icon: "fas fa-file-alt",
+                color: "bg-blue-500/20 text-blue-400",
+                integrations: ["capyaudiencias", "capynotas"]
+            },
+            {
+                id: "capyfiscal",
+                name: "CapyFiscal",
+                function: "Você é a IA Assistente Fiscal do CapyUniverse. Objetivo: Tire dúvidas e obtenha informações sobre questões fiscais e tributárias.",
+                category: "Finanças",
+                icon: "fas fa-calculator",
+                color: "bg-green-500/20 text-green-400",
+                integrations: ["capydindin", "capymei", "capydoc"]
+            },
+            {
+                id: "capyescritor",
+                name: "CapyEscritor",
+                function: "Você é a IA Assistente de Escrita do CapyUniverse. Objetivo: Obtenha ajuda para escrever artigos, posts e mais.",
+                category: "Criação",
+                icon: "fas fa-pen-fancy",
+                color: "bg-pink-500/20 text-pink-400",
+                integrations: ["capycopy", "capynotas", "capylearn"]
+            },
+            {
+                id: "capybula",
+                name: "CapyBula",
+                function: "Você é a IA Bulário Inteligente do CapyUniverse. Objetivo: Consulte informações detalhadas sobre medicamentos.",
+                category: "Saúde",
+                icon: "fas fa-pills",
+                color: "bg-teal-500/20 text-teal-400",
+                integrations: ["capymentalfit", "capynutriplanner", "capylearn"]
+            },
+            {
+                id: "capyai",
+                name: "CapyAI",
+                function: "Você é a IA CapyAI do CapyUniverse. Objetivo: IA central do sistema, responde perguntas e executa comandos.",
+                category: "Central",
+                icon: "fas fa-brain",
+                color: "bg-indigo-500/20 text-indigo-400",
+                integrations: ["Todas as ferramentas"]
+            },
+            {
+                id: "capylearn",
+                name: "CapyLearn",
+                function: "Você é a IA CapyLearn do CapyUniverse. Objetivo: Plataforma educacional com cursos, IA tutora e progresso.",
+                category: "Educação",
+                icon: "fas fa-graduation-cap",
+                color: "bg-blue-500/20 text-blue-400",
+                integrations: ["capybula", "capynutriplanner"]
+            }
+        ];
+
+        // Integration flows
+        const integrationFlows = [
+            {
+                name: "Fluxo Jurídico Completo",
+                description: "Análise de atas → Gestão de prazos → Documentação fiscal",
+                tools: ["capyaudiencias", "capyfiscal"],
+                color: "red"
+            },
+            {
+                name: "Fluxo de Criação de Conteúdo",
+                description: "Escrita → Documentação → Notas",
+                tools: ["capyescritor", "capydoc"],
+                color: "pink"
+            },
+            {
+                name: "Fluxo Educacional",
+                description: "Aprendizado → Saúde → Bem-estar",
+                tools: ["capylearn", "capybula"],
+                color: "green"
+            },
+            {
+                name: "Fluxo de Análise",
+                description: "Dados → Insights → Documentação",
+                tools: ["capydados", "capydoc"],
+                color: "blue"
+            }
+        ];
+
+        // Global variables
+        let apiKey = localStorage.getItem('geminiApiKey') || '';
+        let activeTool = null;
+        let integrationHistory = [];
+
+        // Initialize the app
+        function initApp() {
+            renderToolsGrid();
+            renderIntegrationFlows();
+            updateIntegrationPanel();
+        }
+
+        // Render tools grid
+        function renderToolsGrid() {
+            const grid = document.getElementById('toolsGrid');
+            grid.innerHTML = toolsData.map(tool => `
+                <div class="tool-card glass rounded-xl p-6" onclick="openToolModal('${tool.id}')">
+                    <div class="tool-icon ${tool.color}">
+                        <i class="${tool.icon}"></i>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2">${tool.name}</h3>
+                    <span class="category-badge ${tool.color}">${tool.category}</span>
+                    <p class="text-sm text-gray-400 mt-3 line-clamp-2">${tool.function.substring(0, 100)}...</p>
+                    <div class="mt-4 flex items-center text-xs text-gray-500">
+                        <i class="fas fa-link mr-1"></i>
+                        <span>${tool.integrations.length} integrações</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Render integration flows
+        function renderIntegrationFlows() {
+            const container = document.querySelector('section:last-of-type .grid');
+            container.innerHTML = integrationFlows.map(flow => `
+                <div class="glass rounded-xl p-6">
+                    <h3 class="text-xl font-bold mb-4 text-${flow.color}-400">${flow.name}</h3>
+                    <p class="text-gray-300 text-sm mb-6">${flow.description}</p>
+                    <div class="relative">
+                        ${flow.tools.map((toolId, index) => {
+                            const tool = toolsData.find(t => t.id === toolId);
+                            return `
+                                <div class="flex items-center ${index > 0 ? 'mt-4' : ''}">
+                                    <div class="tool-icon ${tool.color} w-12 h-12">
+                                        <i class="${tool.icon}"></i>
+                                    </div>
+                                    <div class="ml-4 flex-1">
+                                        <div class="font-semibold">${tool.name}</div>
+                                        <div class="text-xs text-gray-400">${tool.category}</div>
+                                    </div>
+                                    ${index < flow.tools.length - 1 ? '<div class="data-flow"></div>' : ''}
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                    <button onclick="simulateIntegrationFlow('${flow.name}')" class="mt-6 w-full px-4 py-2 bg-${flow.color}-500/20 hover:bg-${flow.color}-500/30 rounded-lg transition text-${flow.color}-400">
+                        Simular Fluxo
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        // Open tool modal
+        function openToolModal(toolId) {
+            activeTool = toolsData.find(t => t.id === toolId);
+            if (!activeTool) return;
+
+            document.getElementById('modalTitle').textContent = activeTool.name;
+            
+            // Load tool info
+            document.getElementById('toolInfo').innerHTML = `
+                <div class="flex items-center mb-4">
+                    <div class="tool-icon ${activeTool.color} w-16 h-16">
+                        <i class="${activeTool.icon} text-2xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <span class="category-badge ${activeTool.color}">${activeTool.category}</span>
+                        <h3 class="text-xl font-bold mt-1">${activeTool.name}</h3>
+                    </div>
+                </div>
+                <p class="text-gray-300">${activeTool.function}</p>
+            `;
+
+            // Load integration options
+            const integrationOptions = document.getElementById('integrationOptions');
+            integrationOptions.innerHTML = activeTool.integrations.map(integrationId => {
+                if (integrationId === "Todas as ferramentas") {
+                    return `
+                        <div class="p-3 rounded-lg bg-white/5 hover:bg-white/10 transition cursor-pointer" onclick="integrateWithAllTools()">
+                            <div class="font-semibold text-purple-400">Integrar com todas as ferramentas</div>
+                            <div class="text-xs text-gray-400">Compartilhar dados com todo o ecossistema</div>
+                        </div>
+                    `;
+                }
+                
+                const targetTool = toolsData.find(t => t.id === integrationId);
+                if (!targetTool) return '';
+                
+                return `
+                    <div class="p-3 rounded-lg bg-white/5 hover:bg-white/10 transition cursor-pointer" onclick="integrateWithTool('${integrationId}')">
+                        <div class="font-semibold text-blue-400">${targetTool.name}</div>
+                        <div class="text-xs text-gray-400">${targetTool.category}</div>
+                    </div>
+                `;
+            }).join('');
+
+            // Load tool interface
+            loadToolInterface(activeTool.id);
+            
+            document.getElementById('toolModal').classList.remove('hidden');
+        }
+
+        // Load tool interface based on tool type
+        function loadToolInterface(toolId) {
+            const interfaceContainer = document.getElementById('toolInterface');
+            
+            switch(toolId) {
+                case 'capyaudiencias':
+                    interfaceContainer.innerHTML = `
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Cole o texto da ata de audiência:</label>
+                                <textarea id="ataInput" class="w-full px-4 py-2 rounded-lg bg-gray-800 border border-gray-700 focus:border-purple-500 focus:outline-none h-32" placeholder="Cole aqui o texto completo da ata..."></textarea>
+                            </div>
+                            <button onclick="analyzeAta()" class="w-full px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg transition">
+                                <i class="fas fa-search mr-2"></i> Analisar Ata
+                            </button>
+                            <div id="ataResult" class="hidden glass rounded-lg p-4">
+                                <h4 class="font-bold mb-2">Resumo da Análise:</h4>
+                                <div id="ataSummary" class="text-sm text-gray-300"></div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'capydados':
+                    interfaceContainer.innerHTML = `
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Cole seus dados (CSV ou texto):</label>
+                                <textarea id="dadosInput" class="w-full px-4 py-2 rounded-lg bg-gray-800 border border-gray-700 focus:border-purple-500 focus:outline-none h-32" placeholder="Cole seus dados aqui..."></textarea>
+                            </div>
+                            <button onclick="analyzeData()" class="w-full px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg transition">
+                                <i class="fas fa-chart-line mr-2"></i> Analisar Dados
+                            </button>
+                            <div id="dadosResult" class="hidden glass rounded-lg p-4">
+                                <h4 class="font-bold mb-2">Insights:</h4>
+                                <div id="dadosInsights" class="text-sm text-gray-300"></div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'capyescritor':
+                    interfaceContainer.innerHTML = `
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Tópico para escrever:</label>
+                                <input type="text" id="escritorInput" class="w-full px-4 py-2 rounded-lg bg-gray-800 border border-gray-700 focus:border-purple-500 focus:outline-none" placeholder="Ex: Benefícios da IA na educação">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Estilo:</label>
+                                <select id="escritorStyle" class="w-full px-4 py-2 rounded-lg bg-gray-800 border border-gray-700 focus:border-purple-500 focus:outline-none">
+                                    <option value="formal">Formal</option>
+                                    <option value="informal">Informal</option>
+                                    <option value="acadêmico">Acadêmico</option>
+                                    <option value="criativo">Criativo</option>
+                                </select>
+                            </div>
+                            <button onclick="generateText()" class="w-full px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg transition">
+                                <i class="fas fa-pen mr-2"></i> Gerar Texto
+                            </button>
+                            <div id="escritorResult" class="hidden glass rounded-lg p-4">
+                                <h4 class="font-bold mb-2">Texto Gerado:</h4>
+                                <div id="generatedText" class="text-sm text-gray-300"></div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'capyfiscal':
+                    interfaceContainer.innerHTML = `
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Sua dúvida fiscal:</label>
+                                <input type="text" id="fiscalInput" class="w-full px-4 py-2 rounded-lg bg-gray-800 border border-gray-700 focus:border-purple-500 focus:outline-none" placeholder="Ex: Como declarar renda de aluguel?">
+                            </div>
+                            <button onclick="askFiscal()" class="w-full px-4 py-2 bg-green-600 hover:bg-green-700 rounded-lg transition">
+                                <i class="fas fa-calculator mr-2"></i> Consultar
+                            </button>
+                            <div id="fiscalResult" class="hidden glass rounded-lg p-4">
+                                <h4 class="font-bold mb-2">Resposta:</h4>
+                                <div id="fiscalAnswer" class="text-sm text-gray-300"></div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'capylearn':
+                    interfaceContainer.innerHTML = `
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-2">O que você quer aprender?</label>
+                                <input type="text" id="learnInput" class="w-full px-4 py-2 rounded-lg bg-gray-800 border border-gray-700 focus:border-purple-500 focus:outline-none" placeholder="Ex: Programação em Python">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Nível:</label>
+                                <select id="learnLevel" class="w-full px-4 py-2 rounded-lg bg-gray-800 border border-gray-700 focus:border-purple-500 focus:outline-none">
+                                    <option value="iniciante">Iniciante</option>
+                                    <option value="intermediário">Intermediário</option>
+                                    <option value="avançado">Avançado</option>
+                                </select>
+                            </div>
+                            <button onclick="generateLearningPath()" class="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition">
+                                <i class="fas fa-graduation-cap mr-2"></i> Gerar Plano de Estudo
+                            </button>
+                            <div id="learnResult" class="hidden glass rounded-lg p-4">
+                                <h4 class="font-bold mb-2">Plano de Estudo:</h4>
+                                <div id="learningPath" class="text-sm text-gray-300"></div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                    
+                default:
+                    interfaceContainer.innerHTML = `
+                        <div class="space-y-4">
+                            <div class="chat-container glass rounded-lg p-4" id="chatContainer">
+                                <div class="chat-message">
+                                    <div class="flex items-start">
+                                        <div class="tool-icon ${activeTool.color} w-8 h-8 mr-3">
+                                            <i class="${activeTool.icon}"></i>
+                                        </div>
+                                        <div class="flex-1">
+                                            <div class="font-semibold text-sm">${activeTool.name}</div>
+                                            <div class="text-sm text-gray-300">Olá! Sou a IA ${activeTool.name}. Como posso ajudar você hoje?</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex space-x-2">
+                                <input type="text" id="chatInput" class="flex-1 px-4 py-2 rounded-lg bg-gray-800 border border-gray-700 focus:border-purple-500 focus:outline-none" placeholder="Digite sua mensagem..." onkeypress="handleChatKeypress(event)">
+                                <button onclick="sendChatMessage()" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg transition">
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+            }
+        }
+
+        // Tool-specific functions
+        async function analyzeAta() {
+            const input = document.getElementById('ataInput').value;
+            if (!input) {
+                showNotification('Por favor, cole o texto da ata', 'error');
+                return;
+            }
+            
+            showLoading('ataResult');
+            
+            try {
+                const prompt = `${activeTool.function}\n\nAta de audiência:\n${input}\n\nPor favor, analise esta ata e forneça:\n1. Um resumo dos pontos principais\n2. Prazos importantes identificados\n3. Decisões tomadas\n4. Próximos passos recomendados`;
+                
+                const response = await callGeminiAPI(prompt);
+                document.getElementById('ataSummary').innerHTML = response.replace(/\n/g, '<br>');
+                document.getElementById('ataResult').classList.remove('hidden');
+                
+                addToIntegrationHistory('CapyAudiencias', 'Análise de ata concluída');
+            } catch (error) {
+                showNotification('Erro ao analisar ata: ' + error.message, 'error');
+            }
+        }
+
+        async function analyzeData() {
+            const input = document.getElementById('dadosInput').value;
+            if (!input) {
+                showNotification('Por favor, cole seus dados', 'error');
+                return;
+            }
+            
+            showLoading('dadosResult');
+            
+            try {
+                const prompt = `${activeTool.function}\n\nDados:\n${input}\n\nPor favor, analise estes dados e forneça:\n1. Principais tendências identificadas\n2. Insights relevantes\n3. Padrões encontrados\n4. Recomendações baseadas nos dados`;
+                
+                const response = await callGeminiAPI(prompt);
+                document.getElementById('dadosInsights').innerHTML = response.replace(/\n/g, '<br>');
+                document.getElementById('dadosResult').classList.remove('hidden');
+                
+                addToIntegrationHistory('CapyDados', 'Análise de dados concluída');
+            } catch (error) {
+                showNotification('Erro ao analisar dados: ' + error.message, 'error');
+            }
+        }
+
+        async function generateText() {
+            const topic = document.getElementById('escritorInput').value;
+            const style = document.getElementById('escritorStyle').value;
+            
+            if (!topic) {
+                showNotification('Por favor, informe um tópico', 'error');
+                return;
+            }
+            
+            showLoading('escritorResult');
+            
+            try {
+                const prompt = `${activeTool.function}\n\nTópico: ${topic}\nEstilo: ${style}\n\nPor favor, gere um texto sobre este tópico no estilo solicitado. O texto deve ser bem estruturado, informativo e adequado ao estilo especificado.`;
+                
+                const response = await callGeminiAPI(prompt);
+                document.getElementById('generatedText').innerHTML = response.replace(/\n/g, '<br>');
+                document.getElementById('escritorResult').classList.remove('hidden');
+                
+                addToIntegrationHistory('CapyEscritor', `Texto gerado sobre: ${topic}`);
+            } catch (error) {
+                showNotification('Erro ao gerar texto: ' + error.message, 'error');
+            }
+        }
+
+        async function askFiscal() {
+            const question = document.getElementById('fiscalInput').value;
+            
+            if (!question) {
+                showNotification('Por favor, informe sua dúvida', 'error');
+                return;
+            }
+            
+            showLoading('fiscalResult');
+            
+            try {
+                const prompt = `${activeTool.function}\n\nPergunta: ${question}\n\nPor favor, responda esta pergunta fiscal de forma clara, precisa e com base na legislação vigente. Inclua referências a leis ou regulamentos quando relevante.`;
+                
+                const response = await callGeminiAPI(prompt);
+                document.getElementById('fiscalAnswer').innerHTML = response.replace(/\n/g, '<br>');
+                document.getElementById('fiscalResult').classList.remove('hidden');
+                
+                addToIntegrationHistory('CapyFiscal', `Consulta fiscal: ${question}`);
+            } catch (error) {
+                showNotification('Erro ao consultar: ' + error.message, 'error');
+            }
+        }
+
+        async function generateLearningPath() {
+            const topic = document.getElementById('learnInput').value;
+            const level = document.getElementById('learnLevel').value;
+            
+            if (!topic) {
+                showNotification('Por favor, informe o que quer aprender', 'error');
+                return;
+            }
+            
+            showLoading('learnResult');
+            
+            try {
+                const prompt = `${activeTool.function}\n\nTópico: ${topic}\nNível: ${level}\n\nPor favor, gere um plano de estudo detalhado para este tópico no nível especificado. Inclua:\n1. Objetivos de aprendizagem\n2. Tópicos a serem cobertos\n3. Recursos recomendados\n4. Cronograma sugerido\n5. Projetos práticos`;
+                
+                const response = await callGeminiAPI(prompt);
+                document.getElementById('learningPath').innerHTML = response.replace(/\n/g, '<br>');
+                document.getElementById('learnResult').classList.remove('hidden');
+                
+                addToIntegrationHistory('CapyLearn', `Plano gerado para: ${topic}`);
+            } catch (error) {
+                showNotification('Erro ao gerar plano: ' + error.message, 'error');
+            }
+        }
+
+        // Chat functionality
+        function handleChatKeypress(event) {
+            if (event.key === 'Enter') {
+                sendChatMessage();
+            }
+        }
+
+        async function sendChatMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            const chatContainer = document.getElementById('chatContainer');
+            
+            // Add user message
+            chatContainer.innerHTML += `
+                <div class="chat-message">
+                    <div class="flex items-start justify-end">
+                        <div class="flex-1 text-right">
+                            <div class="font-semibold text-sm">Você</div>
+                            <div class="text-sm text-gray-300">${message}</div>
+                        </div>
+                        <div class="w-8 h-8 rounded-full bg-gray-600 ml-3 flex items-center justify-center">
+                            <i class="fas fa-user text-xs"></i>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            input.value = '';
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+            
+            // Show typing indicator
+            const typingId = 'typing-' + Date.now();
+            chatContainer.innerHTML += `
+                <div id="${typingId}" class="chat-message">
+                    <div class="flex items-start">
+                        <div class="tool-icon ${activeTool.color} w-8 h-8 mr-3">
+                            <i class="${activeTool.icon}"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="text-sm text-gray-400">
+                                <span class="loader inline-block mr-2"></span> Digitando...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+            
+            try {
+                const prompt = `${activeTool.function}\n\nUsuário: ${message}\n\nPor favor, responda de forma útil, precisa e alinhada com sua função especializada.`;
+                
+                const response = await callGeminiAPI(prompt);
+                
+                // Remove typing indicator
+                document.getElementById(typingId)?.remove();
+                
+                // Add AI response
+                chatContainer.innerHTML += `
+                    <div class="chat-message">
+                        <div class="flex items-start">
+                            <div class="tool-icon ${activeTool.color} w-8 h-8 mr-3">
+                                <i class="${activeTool.icon}"></i>
+                            </div>
+                            <div class="flex-1">
+                                <div class="font-semibold text-sm">${activeTool.name}</div>
+                                <div class="text-sm text-gray-300">${response.replace(/\n/g, '<br>')}</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+                addToIntegrationHistory(activeTool.name, `Chat: ${message}`);
+            } catch (error) {
+                document.getElementById(typingId)?.remove();
+                showNotification('Erro ao enviar mensagem: ' + error.message, 'error');
+            }
+        }
+
+        // Integration functions
+        function integrateWithTool(toolId) {
+            const targetTool = toolsData.find(t => t.id === toolId);
+            if (!targetTool) return;
+            
+            showNotification(`Integrando ${activeTool.name} com ${targetTool.name}`, 'info');
+            
+            // Create integration data
+            const integrationData = {
+                from: activeTool.id,
+                to: toolId,
+                timestamp: new Date().toISOString(),
+                data: {
+                    message: `Dados compartilhados de ${activeTool.name} para ${targetTool.name}`,
+                    toolFunction: activeTool.function
+                }
+            };
+            
+            // Store in integration history
+            integrationHistory.push(integrationData);
+            updateIntegrationPanel();
+            
+            // Simulate data transfer
+            setTimeout(() => {
+                showNotification(`Integração concluída! Dados transferidos com sucesso.`, 'success');
+            }, 1500);
+        }
+
+        function integrateWithAllTools() {
+            showNotification(`Integrando ${activeTool.name} com todo o ecossistema`, 'info');
+            
+            // Create integration data for all tools
+            toolsData.forEach(tool => {
+                if (tool.id !== activeTool.id) {
+                    const integrationData = {
+                        from: activeTool.id,
+                        to: tool.id,
+                        timestamp: new Date().toISOString(),
+                        data: {
+                            message: `Dados compartilhados de ${activeTool.name} para ${tool.name}`,
+                            toolFunction: activeTool.function
+                        }
+                    };
+                    integrationHistory.push(integrationData);
+                }
+            });
+            
+            updateIntegrationPanel();
+            
+            // Simulate data transfer
+            setTimeout(() => {
+                showNotification(`Integração concluída! Dados compartilhados com todo o ecossistema.`, 'success');
+            }, 2000);
+        }
+
+        function simulateIntegrationFlow(flowName) {
+            const flow = integrationFlows.find(f => f.name === flowName);
+            if (!flow) return;
+            
+            showNotification(`Iniciando fluxo: ${flowName}`, 'info');
+            
+            // Simulate each step in the flow
+            flow.tools.forEach((toolId, index) => {
+                setTimeout(() => {
+                    const tool = toolsData.find(t => t.id === toolId);
+                    showNotification(`Executando: ${tool.name}`, 'info');
+                    
+                    // Add to integration history
+                    integrationHistory.push({
+                        flow: flowName,
+                        tool: toolId,
+                        step: index + 1,
+                        timestamp: new Date().toISOString()
+                    });
+                    
+                    updateIntegrationPanel();
+                }, index * 1000);
+            });
+            
+            // Complete flow
+            setTimeout(() => {
+                showNotification(`Fluxo "${flowName}" concluído com sucesso!`, 'success');
+            }, flow.tools.length * 1000);
+        }
+
+        // API Key functions
+        function openApiKeyModal() {
+            document.getElementById('apiKeyInput').value = apiKey;
+            document.getElementById('apiKeyModal').classList.remove('hidden');
+        }
+
+        function closeApiKeyModal() {
+            document.getElementById('apiKeyModal').classList.add('hidden');
+        }
+
+        function saveApiKey() {
+            const newKey = document.getElementById('apiKeyInput').value.trim();
+            if (newKey) {
+                apiKey = newKey;
+                localStorage.setItem('geminiApiKey', apiKey);
+                showNotification('Chave API salva com sucesso!', 'success');
+                closeApiKeyModal();
+            } else {
+                showNotification('Por favor, insira uma chave API válida', 'error');
+            }
+        }
+
+        // Gemini API call
+        async function callGeminiAPI(prompt) {
+            if (!apiKey) {
+                throw new Error('Chave API não configurada. Por favor, configure sua chave API Gemini.');
+            }
+            
+            const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + apiKey, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    contents: [{
+                        parts: [{
+                            text: prompt
+                        }]
+                    }],
+                    generationConfig: {
+                        temperature: 0.7,
+                        topK: 40,
+                        topP: 0.95,
+                        maxOutputTokens: 2048,
+                    }
+                })
+            });
+            
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.error?.message || 'Erro na API Gemini');
+            }
+            
+            const data = await response.json();
+            return data.candidates[0].content.parts[0].text;
+        }
+
+        // UI Helper functions
+        function closeToolModal() {
+            document.getElementById('toolModal').classList.add('hidden');
+            activeTool = null;
+        }
+
+        function toggleIntegrationPanel() {
+            const panel = document.getElementById('integrationPanel');
+            panel.classList.toggle('translate-x-full');
+        }
+
+        function updateIntegrationPanel() {
+            const panel = document.getElementById('integrationList');
+            panel.innerHTML = integrationHistory.slice(-10).reverse().map(item => {
+                const fromTool = toolsData.find(t => t.id === item.from);
+                const toTool = toolsData.find(t => t.id === item.to);
+                
+                return `
+                    <div class="glass rounded-lg p-3 text-xs">
+                        <div class="font-semibold text-purple-400">
+                            ${fromTool?.name || item.flow} → ${toTool?.name || item.tool}
+                        </div>
+                        <div class="text-gray-400 mt-1">
+                            ${new Date(item.timestamp).toLocaleTimeString()}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function showLoading(elementId) {
+            const element = document.getElementById(elementId);
+            element.classList.remove('hidden');
+            element.innerHTML = '<div class="flex items-center justify-center"><span class="loader mr-2"></span> Processando...</div>';
+        }
+
+        function addToIntegrationHistory(tool, action) {
+            integrationHistory.push({
+                tool: tool,
+                action: action,
+                timestamp: new Date().toISOString()
+            });
+            updateIntegrationPanel();
+        }
+
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `fixed top-20 right-4 p-4 rounded-lg shadow-lg z-50 ${
+                type === 'success' ? 'bg-green-600' :
+                type === 'error' ? 'bg-red-600' :
+                type === 'info' ? 'bg-blue-600' : 'bg-gray-600'
+            } text-white transform translate-x-full transition-transform duration-300`;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            // Animate in
+            setTimeout(() => {
+                notification.classList.remove('translate-x-full');
+            }, 100);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.classList.add('translate-x-full');
+                setTimeout(() => {
+                    notification.remove();
+                }, 300);
+            }, 3000);
+        }
+
+        // Initialize app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+</html>
